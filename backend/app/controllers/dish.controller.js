@@ -48,10 +48,7 @@ exports.updateSoldOutState = (req, res) => {
                     message: `Cannot find Dish with id=${id}.`
                 });
             }
-            console.log(dish.is_sold_out);
             dish.is_sold_out = !dish.is_sold_out;
-            console.log(dish.is_sold_out);
-
             dish.save()
                 .then(() => {
                     res.send({

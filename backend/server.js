@@ -36,6 +36,7 @@ app.get("/", (req, res) => {
 });
 
 require("./app/routes/dish.router")(app);
+require("./app/routes/order.router")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

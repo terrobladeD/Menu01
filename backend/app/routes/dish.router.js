@@ -9,7 +9,7 @@ module.exports = app => {
     // Retrieve a single Dish with id
     router.get("/:id", dish.findOne);
 
-    // Make a single soldout or validagain with id
+    // Make a single dish sold out or valid again with id
     router.put("/soldout/:id",dish.updateSoldOutState);
 
 
