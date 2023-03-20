@@ -1,1 +1,12 @@
-initial commit with no message
+dummy data in dishes table
+INSERT INTO dishes (name, description, price_ori, price_cur, is_sold_out, type, is_valid, pict_url,createdAt,updatedAt) VALUES
+('Dish 1', 'Description for Dish 1', 10.99, 8.99, false, 'Type A', true, 'https://example.com/dish1.jpg',NOW(),NOW()),
+('Dish 2', 'Description for Dish 2', 15.99, 12.99, false, 'Type B', true, 'https://example.com/dish2.jpg',NOW(),NOW()),
+('Dish 3', 'Description for Dish 3', 20.99, 17.99, true, 'Type A', true, 'https://example.com/dish3.jpg',NOW(),NOW()),
+('Dish 4', 'Description for Dish 4', 18.99, 15.99, false, 'Type C', true, 'https://example.com/dish4.jpg',NOW(),NOW()),
+('Dish 5', 'Description for Dish 5', 22.99, 19.99, true, 'Type B', true, 'https://example.com/dish5.jpg',NOW(),NOW()),
+('Dish 6', 'Description for Dish 6', 12.99, 10.99, false, 'Type C', true, 'https://example.com/dish6.jpg',NOW(),NOW()),
+('Dish 7', 'Description for Dish 7', 16.99, 14.99, false, 'Type A', true, 'https://example.com/dish7.jpg',NOW(),NOW()),
+('Dish 8', 'Description for Dish 8', 25.99, 22.99, true, 'Type B', true, 'https://example.com/dish8.jpg',NOW(),NOW()),
+('Dish 9', 'Description for Dish 9', 19.99, 16.99, false, 'Type C', true, 'https://example.com/dish9.jpg',NOW(),NOW()),
+('Dish 10', 'Description for Dish 10', 27.99, 24.99, true, 'Type A', true, 'https://example.com/dish10.jpg',NOW(),NOW());

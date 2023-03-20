@@ -15,15 +15,15 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
-// const db = require("./app/models");
+const db = require("./app/models");
 
-// db.sequelize.sync()
-//   .then(() => {
-//     console.log("Synced db.");
-//   })
-//   .catch((err) => {
-//     console.log("Failed to sync db: " + err.message);
-//   });
+db.sequelize.sync()
+  .then(() => {
+    console.log("Synced db.");
+  })
+  .catch((err) => {
+    console.log("Failed to sync db: " + err.message);
+  });
 
 // // drop the table if it already exists
 // db.sequelize.sync({ force: true }).then(() => {
@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to Menu project" });
 });
 
-// require("./app/routes/turorial.routes")(app);
+require("./app/routes/dish.router")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
