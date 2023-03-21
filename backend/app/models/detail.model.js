@@ -4,6 +4,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER
       }
     });
+
+    // Detail.associate = (models) => {
+    //   Detail.belongsTo(models.order, { as: "order" });
+    //   Detail.belongsTo(models.dish, { as: "dish" });
+    // };
   
     return Detail;
   };
