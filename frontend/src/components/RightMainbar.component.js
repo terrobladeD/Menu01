@@ -1,23 +1,33 @@
-import React from 'react';
-import Dish from './Dish.component';
+import React, { useState, useEffect } from 'react';
+import DishItem from './DishItem.component';
 
-function App() {
-  const dishes = [
-    {
-      id: 1,
-      name: 'Spaghetti Carbonara',
-      description: 'Delicious spaghetti with bacon and parmesan cheese.',
-      price: 12.99,
-      image: 'https://random.imagecdn.app/50/50',
-    },
-    {
-      id: 2,
-      name: 'Grilled Chicken Salad',
-      description: 'A healthy salad with grilled chicken, lettuce, tomatoes, and a light dressing.',
-      price: 10.99,
-      image: 'https://random.imagecdn.app/50/50',
-    },
-  ];
+function RightMainbar() {
+  const [dishes, setDishes] = useState([]);
+
+  useEffect(() => {
+    const fetchDishes = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/api/dish');
+        const data = await response.json();
+
+        const formattedDishes = data.map((dish) => ({
+          id: dish.id,
+          name: dish.name,
+          description: dish.description,
+          price_ori: parseFloat(dish.price_ori),
+          price_cur: parseFloat(dish.price_cur),
+          is_sold_out: dish.is_sold_out,
+          image: 'https://random.imagecdn.app/200/200',
+        }));
+
+        setDishes(formattedDishes);
+      } catch (error) {
+        console.error('Failed to fetch dishes:', error);
+      }
+    };
+
+    fetchDishes();
+  }, []);
 
   const handleAddToCart = (dish) => {
     console.log(`Adding ${dish.name} to cart.`);
@@ -26,10 +36,10 @@ function App() {
   return (
     <div>
       {dishes.map((dish) => (
-        <Dish key={dish.id} dish={dish} onAddToCart={handleAddToCart} />
+        <DishItem key={dish.id} dish={dish} onAddToCart={handleAddToCart} />
       ))}
     </div>
   );
 }
 
-export default App;
+export default RightMainbar;
