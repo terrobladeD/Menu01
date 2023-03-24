@@ -15,7 +15,7 @@ function CartItem({ item, onIncrease, onDecrease }) {
       <Col xs={8} md={6}>
         <h4>{item.name}</h4>
         <p>{item.description}</p>
-        <p>${item.price.toFixed(2)}</p>
+        <p>${item.price_cur.toFixed(2)}</p>
       </Col>
       <Col xs={12} md={3} className="text-center">
         <Button variant="outline-primary" onClick={() => onDecrease(item)}>-</Button>

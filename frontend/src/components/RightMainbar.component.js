@@ -1,42 +1,47 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import DishItem from './DishItem.component';
+import AppContext from '../context/AppContext';
 
-function RightMainbar() {
-  const [dishes, setDishes] = useState([]);
+function RightMainbar({ scrollToTypeRef }) {
+  const { dishes, dishTypes, addToCart, removeFromCart } = useContext(AppContext);
+
+  // Group dishes by their types
+  const groupedDishes = dishTypes.reduce((acc, type) => {
+    acc[type] = dishes.filter((dish) => dish.type === type);
+    return acc;
+  }, {});
+
+  const typeRefs = useRef([]);
 
   useEffect(() => {
-    const fetchDishes = async () => {
-      try {
-        const response = await fetch('http://localhost:8080/api/dish');
-        const data = await response.json();
-
-        const formattedDishes = data.map((dish) => ({
-          id: dish.id,
-          name: dish.name,
-          description: dish.description,
-          price_ori: parseFloat(dish.price_ori),
-          price_cur: parseFloat(dish.price_cur),
-          is_sold_out: dish.is_sold_out,
-          image: 'https://random.imagecdn.app/200/200',
-        }));
-
-        setDishes(formattedDishes);
-      } catch (error) {
-        console.error('Failed to fetch dishes:', error);
+    scrollToTypeRef.current = (type) => {
+      const index = dishTypes.findIndex((t) => t === type);
+      if (typeRefs.current[index]) {
+        const headerOffset = (window.innerHeight * 9) / 100;
+        const elementPosition = typeRefs.current[index].offsetTop;
+        const offsetPosition = elementPosition - headerOffset;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth',
+        });
       }
     };
-
-    fetchDishes();
-  }, []);
-
-  const handleAddToCart = (dish) => {
-    console.log(`Adding ${dish.name} to cart.`);
-  };
+  }, [dishTypes, scrollToTypeRef]);
 
   return (
-    <div>
-      {dishes.map((dish) => (
-        <DishItem key={dish.id} dish={dish} onAddToCart={handleAddToCart} />
+    <div style={{ paddingBottom: '10vh' }}>
+      {dishTypes.map((type, index) => (
+        <div key={type} ref={(el) => (typeRefs.current[index] = el)}>
+          <h2>{type}</h2>
+          {groupedDishes[type].map((dish) => (
+            <DishItem
+              key={dish.id}
+              dish={dish}
+              onAddToCart={addToCart}
+              onRemoveFromCart={removeFromCart}
+            />
+          ))}
+        </div>
       ))}
     </div>
   );
