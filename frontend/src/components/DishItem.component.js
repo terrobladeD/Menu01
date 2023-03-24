@@ -24,39 +24,36 @@ function DishItem({ dish, onAddToCart, onRemoveFromCart }) {
           <Card.Body>
             <Card.Title>{dish.name}</Card.Title>
             <Card.Text>{dish.description}</Card.Text>
-            {dish.price_ori !== dish.price_cur && (
-              <Card.Text>
-                <span style={{ textDecoration: 'line-through', fontSize: '0.8em', color: 'grey' }}>
+            <div className="d-flex align-items-center justify-content-between">
+              {dish.price_ori !== dish.price_cur && (
+                <span style={{ textDecoration: 'line-through', fontSize: '0.8em', color: 'grey', marginRight: '5px' }}>
                   ${dish.price_ori.toFixed(2)}
-                </span>{' '}
-                <span>${dish.price_cur.toFixed(2)}</span>
-              </Card.Text>
-            )}
-            {dish.price_ori === dish.price_cur && <Card.Text>${dish.price_cur.toFixed(2)}</Card.Text>}
+                </span>
+              )}
+              <span style={{ marginRight: '5px' }}>${dish.price_cur.toFixed(2)}</span>
+              {!dish.is_sold_out && dish.quantity === 0 && (
+                <Button variant="outline-primary" onClick={handleAddToCart} className="rounded-circle px-2" style={{ fontSize: '11px' }}>
+                  +
+                </Button>
+              )}
+              {!dish.is_sold_out && dish.quantity > 0 && (
+                <div>
+                  <Button variant="outline-primary" onClick={handleRemoveFromCart} className="rounded-circle px-2" style={{ fontSize: '11px', marginRight: '5px' }}>
+                    -
+                  </Button>
+                  <span className="mx-2">{dish.quantity}</span>
+                  <Button variant="outline-primary" onClick={handleAddToCart} className="rounded-circle px-2" style={{ fontSize: '11px' }}>
+                    +
+                  </Button>
+                </div>
+              )}
+              {dish.is_sold_out && (
+                <span style={{ fontWeight: 'bold', color: 'red', marginLeft: '5px' }}>Sold Out</span>
+              )}
+            </div>
           </Card.Body>
         </Col>
       </Row>
-      <Card.Footer className="text-end">
-        {!dish.is_sold_out && dish.quantity === 0 && (
-          <Button variant="success" onClick={handleAddToCart}>
-            +
-          </Button>
-        )}
-        {!dish.is_sold_out && dish.quantity > 0 && (
-          <>
-            <Button variant="danger" onClick={handleRemoveFromCart}>
-              -
-            </Button>
-            <span className="mx-2">{dish.quantity}</span>
-            <Button variant="success" onClick={handleAddToCart}>
-              +
-            </Button>
-          </>
-        )}
-        {dish.is_sold_out && (
-          <span style={{ fontWeight: 'bold', color: 'red' }}>Sold Out</span>
-        )}
-      </Card.Footer>
     </Card>
   );
 }

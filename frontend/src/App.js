@@ -16,7 +16,7 @@ function App() {
       <Header />
 
       </Navbar>
-      <main style={{ marginTop: '9vh' }}>
+      <main style={{ marginTop: '8vh' }}>
         <Container>
           <Routes>
             <Route exact path="/" element={<HomePage />} />

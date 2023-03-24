@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
-import { Container, Button } from 'react-bootstrap';
+import { Container, Button, Card, Row, Col } from 'react-bootstrap';
 import CartItem from '../components/CartItem.component';
 import AppContext from '../context/AppContext';
 import { useNavigate } from 'react-router-dom';
+import '../App.css';
 
 function ShoppingCartPage() {
   const { dishes, addToCart, removeFromCart } = useContext(AppContext);
@@ -13,17 +14,29 @@ function ShoppingCartPage() {
   return (
     <Container>
       <h1>Shopping Cart</h1>
-      {cartItems.length === 0 &&(<h2 onClick={() => navigate('/menu')}>Cart is Empty!</h2>)}
+      {cartItems.length === 0 && (
+        <h2 onClick={() => navigate('/menu')}>Cart is Empty!</h2>
+      )}
       {cartItems.map((item) => (
-        <CartItem key={item.id} item={item} onIncrease={() => addToCart(item)} onDecrease={() => removeFromCart(item)} />
+        <Card key={item.id} className="mb-4">
+          <Row className="align-items-center">
+            <Col xs={12} md={12}>
+              <CartItem             
+                item={item}
+                onIncrease={() => addToCart(item)}
+                onDecrease={() => removeFromCart(item)}
+              />
+            </Col>
+          </Row>
+        </Card>
       ))}
       <div className="d-flex justify-content-between align-items-center mt-4">
         <h3>Total: ${total.toFixed(2)}</h3>
         <div>
-          <Button variant="primary" onClick={() => navigate('/menu')}>
+          <Button variant="primary" onClick={() => navigate('/menu')} className="me-2">
             Add more
           </Button>
-          <Button variant="success" onClick={() => alert('Proceed to checkout')} className="me-2">
+          <Button variant="success" onClick={() => alert('Proceed to checkout')}>
             Checkout
           </Button>
         </div>

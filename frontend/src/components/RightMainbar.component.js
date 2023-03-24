@@ -17,7 +17,7 @@ function RightMainbar({ scrollToTypeRef }) {
     scrollToTypeRef.current = (type) => {
       const index = dishTypes.findIndex((t) => t === type);
       if (typeRefs.current[index]) {
-        const headerOffset = (window.innerHeight * 9) / 100;
+        const headerOffset = (window.innerHeight * 9) / 100 + 50;
         const elementPosition = typeRefs.current[index].offsetTop;
         const offsetPosition = elementPosition - headerOffset;
         window.scrollTo({

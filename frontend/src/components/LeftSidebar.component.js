@@ -13,19 +13,21 @@ function LeftSidebar({ scrollToTypeRef }) {
 
   return (
     <Navbar
-      style={{ backgroundColor: 'whitesmoke', width: "calc(100% -1px)", fontSize: "11px", overflowX: 'hidden' }}
+      style={{ backgroundColor: '#f5f5f5', width: "100%", fontSize: "15px", overflowX: 'auto' }}
       variant="light"
     >
       <Navbar.Collapse id="basic-navbar-nav">
-        <Nav style={{ display: 'flex', flexDirection: 'column' , width: "calc(100% - 1px)"}}>
+        <Nav style={{ display: 'flex', flexDirection: 'row', width: "100%", overflowX: 'auto'}}>
           {dishTypes.map((type, index) => (
             <Nav.Link key={index} style={{
-              height: '50px',
+              height: '40px',
               display: 'flex',
               alignItems: 'center',
-              borderColor: 'grey',
-              borderWidth: '1px',
-              borderStyle: 'solid',
+              textAlign:"center",
+              borderRadius: '10px',
+              marginRight: '15px',
+              whiteSpace: 'nowrap',
+              backgroundColor: 'lightgrey'
             }} onClick={() => handleClick(type)}>
               {type}
             </Nav.Link>
