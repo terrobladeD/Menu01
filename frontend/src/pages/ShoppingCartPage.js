@@ -21,7 +21,7 @@ function ShoppingCartPage() {
         <Card key={item.id} className="mb-4">
           <Row className="align-items-center">
             <Col xs={12} md={12}>
-              <CartItem             
+              <CartItem
                 item={item}
                 onIncrease={() => addToCart(item)}
                 onDecrease={() => removeFromCart(item)}
@@ -36,9 +36,12 @@ function ShoppingCartPage() {
           <Button variant="primary" onClick={() => navigate('/menu')} className="me-2">
             Add more
           </Button>
-          <Button variant="success" onClick={() => alert('Proceed to checkout')}>
-            Checkout
-          </Button>
+          {cartItems.length !== 0 && (
+            <Button variant="success" onClick={() => navigate('/checkout')}>
+              Checkout
+            </Button>
+          )}
+
         </div>
       </div>
     </Container>

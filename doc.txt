@@ -49,59 +49,6 @@ SET NULL ON UPDATE CASCADE
 
 //////////////////////////////////////////////////////////////////////
 
-//dummy data in dishes table
-INSERT INTO dishes (name, description, price_ori, price_cur, is_sold_out, type, is_valid, pict_url,createdAt,updatedAt) VALUES
-('Dish 0', 'Description for Dish 0', 27.99, 24.99, true, 'Type A', true, 'https://example.com/dish10.jpg',NOW(),NOW()),
-('Dish 1', 'Description for Dish 1', 10.99, 8.99, false, 'Type A', true, 'https://example.com/dish1.jpg',NOW(),NOW()),
-('Dish 2', 'Description for Dish 2', 15.99, 12.99, false, 'Type B', true, 'https://example.com/dish2.jpg',NOW(),NOW()),
-('Dish 3', 'Description for Dish 3', 20.99, 17.99, true, 'Type A', true, 'https://example.com/dish3.jpg',NOW(),NOW()),
-('Dish 4', 'Description for Dish 4', 18.99, 15.99, false, 'Type C', true, 'https://example.com/dish4.jpg',NOW(),NOW()),
-('Dish 5', 'Description for Dish 5', 22.99, 19.99, true, 'Type B', true, 'https://example.com/dish5.jpg',NOW(),NOW()),
-('Dish 6', 'Description for Dish 6', 12.99, 10.99, false, 'Type C', true, 'https://example.com/dish6.jpg',NOW(),NOW()),
-('Dish 7', 'Description for Dish 7', 16.99, 14.99, false, 'Type A', true, 'https://example.com/dish7.jpg',NOW(),NOW()),
-('Dish 8', 'Description for Dish 8', 25.99, 22.99, true, 'Type B', true, 'https://example.com/dish8.jpg',NOW(),NOW()),
-('Dish 9', 'Description for Dish 9', 19.99, 16.99, false, 'Type C', true, 'https://example.com/dish9.jpg',NOW(),NOW());
-
-//dummy data in orders and details table
-INSERT INTO orders (total_price, table_num, date, email, status, additional_info, createdAt, updatedAt) 
-VALUES (29.97, 5, '2023-03-20 12:00:00', 'john@example.com', 0, NULL, NOW(), NOW());
-INSERT INTO details (quantity, createdAt, updatedAt, orderId, dishId)
-VALUES 
-(1, NOW(), NOW(), 1, 2), 
-(2, NOW(), NOW(), 1, 5),
-(1, NOW(), NOW(), 1, 7), 
-(1, NOW(), NOW(), 1, 8);
-
-INSERT INTO orders (total_price, table_num, date, email, status, additional_info, createdAt, updatedAt)
-VALUES (53.95, 10, '2023-03-20 18:30:00', 'jane@example.com', 1, 'Extra spicy', NOW(), NOW());
-INSERT INTO details (quantity, createdAt, updatedAt, orderId, dishId)
-VALUES 
-(1, NOW(), NOW(), LAST_INSERT_ID(), 2), 
-(2, NOW(), NOW(), LAST_INSERT_ID(), 5),
-(1, NOW(), NOW(), LAST_INSERT_ID(), 7), 
-(1, NOW(), NOW(), LAST_INSERT_ID(), 8);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //////////////////
 INSERT INTO dishes (name, description, price_ori, price_cur, is_sold_out, type, is_valid, pict_url, createdAt, updatedAt) VALUES
 ('Atlantic Salmon', 'description for Atlantic Salmon', 50, 50, false, 'MAINS', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Atlantic_Salmon.png?v=1677990074', NOW(), NOW()),
@@ -131,3 +78,18 @@ INSERT INTO dishes (name, description, price_ori, price_cur, is_sold_out, type, 
 ('Tandoori Chicken Pizza', 'description for Tandoori Chicken Pizza', 50, 49, false, 'PIZZA', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Tandoori_Chicken_Pizza.png?v=1677990073', NOW(), NOW()),
 ('Thai Beef Salad', 'description for Thai Beef Salad', 35, 34, false, 'STARTERS & SALADS', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Thai_Beef_Salad.png?v=1677990073', NOW(), NOW());
 
+
+INSERT INTO orders (total_price, table_num, date, email, status, additional_info, createdAt, updatedAt)
+VALUES
+(266, 1, NOW(), 'john@example.com', 1, 'Allergy to nuts', NOW(), NOW()),
+(160, 2, NOW(), 'jane@example.com', 1, 'Vegan options', NOW(), NOW());
+
+
+INSERT INTO details (quantity, createdAt, updatedAt, orderId, dishId)
+VALUES
+(2, NOW(), NOW(), 1, 1), -- 2 x Atlantic Salmon for Order 1
+(1, NOW(), NOW(), 1, 3), -- 1 x Bruschetta for Order 1
+(3, NOW(), NOW(), 1, 6), -- 3 x Carnivore Pizza for Order 1
+(1, NOW(), NOW(), 2, 2), -- 1 x BBQ Prok Ribs for Order 2
+(2, NOW(), NOW(), 2, 4), -- 2 x Buffalo Wings for Order 2
+(1, NOW(), NOW(), 2, 5); -- 1 x Caesar Salad for Order 2

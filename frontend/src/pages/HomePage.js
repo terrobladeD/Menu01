@@ -26,7 +26,7 @@ function HomePage() {
           </p>
         </div>
         <div className="mt-4">
-          <small>&copy; {new Date().getFullYear()} TopUp. All rights reserved.</small>
+          <small>&copy; {new Date().getFullYear()} UpTop. All rights reserved.</small>
         </div>
       </div>
     </div>

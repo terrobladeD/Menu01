@@ -25,12 +25,15 @@ function DishItem({ dish, onAddToCart, onRemoveFromCart }) {
             <Card.Title>{dish.name}</Card.Title>
             <Card.Text>{dish.description}</Card.Text>
             <div className="d-flex align-items-center justify-content-between">
-              {dish.price_ori !== dish.price_cur && (
+            <div>
+            {dish.price_ori !== dish.price_cur && (
                 <span style={{ textDecoration: 'line-through', fontSize: '0.8em', color: 'grey', marginRight: '5px' }}>
                   ${dish.price_ori.toFixed(2)}
                 </span>
               )}
               <span style={{ marginRight: '5px' }}>${dish.price_cur.toFixed(2)}</span>
+            </div>
+
               {!dish.is_sold_out && dish.quantity === 0 && (
                 <Button variant="outline-primary" onClick={handleAddToCart} className="rounded-circle px-2" style={{ fontSize: '11px' }}>
                   +

@@ -5,6 +5,7 @@ const AppContext = createContext();
 export const AppProvider = ({ children }) => {
   const [dishes, setDishes] = useState([]);
   const [dishTypes, setDishTypes] = useState([]);
+  const [tableNum, setTableNum] = useState(null);
 
   useEffect(() => {
     const fetchDishes = async () => {
@@ -55,6 +56,13 @@ export const AppProvider = ({ children }) => {
     };
 
     fetchDishes();
+    const queryParams = new URLSearchParams(window.location.search);
+    const tableNumParam = queryParams.get('tablenum');
+
+    if (tableNumParam) {
+      setTableNum(tableNumParam);
+    }
+
   }, []);
 
   const handleAddToCart = (dish) => {
@@ -75,11 +83,17 @@ export const AppProvider = ({ children }) => {
     });
   };
 
+  const clearDishes = () => {
+    setDishes((prevDishes) => prevDishes.map((dish) => ({ ...dish, quantity: 0 })));
+  };
+
   const value = {
+    tableNum,
     dishes,
     dishTypes,
     addToCart: handleAddToCart,
     removeFromCart: handleRemoveFromCart,
+    clearDishes
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

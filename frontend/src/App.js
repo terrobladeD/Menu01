@@ -5,6 +5,7 @@ import { Container, Navbar } from 'react-bootstrap';
 import HomePage from './pages/HomePage';
 import MenuPage from './pages/MenuPage';
 import ShoppingCartPage from './pages/ShoppingCartPage';
+import Checkout from './pages/CheckoutPage';
 import Header from './components/Header.component'
 import { AppProvider } from './context/AppContext';
 import './App.css';
@@ -22,6 +23,7 @@ function App() {
             <Route exact path="/" element={<HomePage />} />
             <Route path="/menu" element={<MenuPage />} />
             <Route path="/shopping-cart" element={<ShoppingCartPage />} />
+            <Route path="/checkout" element={<Checkout />} />
           </Routes>
         </Container>
       </main>
