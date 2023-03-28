@@ -1,7 +1,43 @@
 const db = require("../models");
+const { Op } = require('sequelize');
 const Order = db.order;
 const Detail = db.detail;
 const Dish = db.dish;
+
+//Get all the orders and detail in a speficic date
+exports.findOrdersByDate = (req, res) => {
+    const dateString = req.params.date;
+
+    // Convert the date string to a Date object
+    const date = new Date(dateString);
+    const nextDate = new Date(date);
+    nextDate.setDate(date.getDate() + 1);
+
+    // Find all orders with a date matching the input date
+    Order.findAll({
+        where: {
+            date: {
+                [Op.gte]: date,
+                [Op.lt]: nextDate
+            }
+        },
+        include: ["detail"]
+    })
+        .then((data) => {
+            if (data.length > 0) {
+                res.send(data);
+            } else {
+                res.status(200).send({
+                    message: `No orders found for date: ${dateString}`
+                });
+            }
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: `Error retrieving orders for date: ${dateString}`
+            });
+        });
+};
 
 // Get the order and its detail with a order id 
 exports.findOne = (req, res) => {

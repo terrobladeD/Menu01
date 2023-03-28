@@ -22,6 +22,7 @@ db.sequelize = sequelize;
 db.order = require("./order.model.js")(sequelize, Sequelize);
 db.dish = require("./dish.model.js")(sequelize, Sequelize);
 db.detail = require("./detail.model.js")(sequelize, Sequelize);
+db.dishseq = require("./dishseq.model.js")(sequelize, Sequelize);
 
 db.order.hasMany(db.detail, { as: "detail" });
 db.detail.belongsTo(db.order, {

@@ -3,7 +3,13 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING
       },
+      short_name: {
+        type: DataTypes.STRING
+      },
       description: {
+        type: DataTypes.STRING
+      },
+      full_description: {
         type: DataTypes.STRING
       },
       price_ori: {
