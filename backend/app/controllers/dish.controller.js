@@ -118,3 +118,34 @@ exports.updateValidState = (req, res) => {
         });
 };
 
+// Update a dish's price with an id
+exports.updatePrice = (req, res) => {
+    const id = req.params.id;
+
+    Dish.update(
+        {
+            price_ori: req.body.price_ori,
+            price_cur: req.body.price_cur,
+        },
+        {
+            where: { id: id },
+        }
+    )
+        .then((num) => {
+            if (num == 1) {
+                res.send({
+                    message: "Dish price was updated successfully.",
+                });
+            } else {
+                res.send({
+                    message: `Cannot update dish with id=${id}. Maybe dish was not found or request body is empty.`,
+                });
+            }
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: "Error updating dish with id=" + id,
+            });
+        });
+};
+

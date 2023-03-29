@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, Button, Row, Col } from 'react-bootstrap';
 
 function CartItem({ item, onIncrease, onDecrease }) {
+    
   return (
     <Card className="mb-4">
       <Row className="align-items-center">

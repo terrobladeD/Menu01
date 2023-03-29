@@ -6,6 +6,11 @@ export const AppProvider = ({ children }) => {
   const [dishes, setDishes] = useState([]);
   const [dishTypes, setDishTypes] = useState([]);
   const [tableNum, setTableNum] = useState(null);
+  const [selectedDish, setSelectedDish] = useState(null);
+
+  function handleDishSelect(dish) {
+    setSelectedDish(dish);
+  }
 
   useEffect(() => {
     const fetchDishes = async () => {
@@ -26,6 +31,7 @@ export const AppProvider = ({ children }) => {
             id: dish.id,
             name: dish.name,
             description: dish.description,
+            full_description: dish.full_description,
             price_ori: parseFloat(dish.price_ori),
             price_cur: parseFloat(dish.price_cur),
             is_sold_out: dish.is_sold_out,
@@ -91,6 +97,8 @@ export const AppProvider = ({ children }) => {
     tableNum,
     dishes,
     dishTypes,
+    selectedDish,
+    handleDishSelect,
     addToCart: handleAddToCart,
     removeFromCart: handleRemoveFromCart,
     clearDishes

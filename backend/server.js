@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-
+const path = require('path');
 const app = express();
 
 var corsOptions = {
@@ -37,6 +37,14 @@ app.get("/", (req, res) => {
 
 require("./app/routes/dish.router")(app);
 require("./app/routes/order.router")(app);
+
+// method to handle the image query from api
+const imagesPath = path.join(__dirname, 'images/dishes');
+app.use('/images', express.static(imagesPath));
+
+// method to use email
+// to do : cannot use SMTP now need to use Oauth2.0 in next iteration
+// app.use(require('./app/routes/emailRoutes'))
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

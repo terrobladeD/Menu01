@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, {useContext, useEffect, useRef } from 'react';
 import DishItem from './DishItem.component';
 import AppContext from '../context/AppContext';
 

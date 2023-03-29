@@ -6,28 +6,31 @@ import HomePage from './pages/HomePage';
 import MenuPage from './pages/MenuPage';
 import ShoppingCartPage from './pages/ShoppingCartPage';
 import Checkout from './pages/CheckoutPage';
+import DishDetailPage from './pages/DishDetailPage';
 import Header from './components/Header.component'
 import { AppProvider } from './context/AppContext';
 import './App.css';
 function App() {
+
   return (
     <AppProvider>
-    <Router>
-      <Navbar bg="light" expand="lg" fixed='top' style={{height:'8vh'}}>
-      <Header />
+      <Router>
+        <Navbar bg="light" expand="lg" fixed='top' style={{ height: '8vh' }}>
+          <Header />
 
-      </Navbar>
-      <main style={{ marginTop: '8vh' }}>
-        <Container>
-          <Routes>
-            <Route exact path="/" element={<HomePage />} />
-            <Route path="/menu" element={<MenuPage />} />
-            <Route path="/shopping-cart" element={<ShoppingCartPage />} />
-            <Route path="/checkout" element={<Checkout />} />
-          </Routes>
-        </Container>
-      </main>
-    </Router>
+        </Navbar>
+        <main style={{ marginTop: '8vh' }}>
+          <Container>
+            <Routes>
+              <Route exact path="/" element={<HomePage />} />
+              <Route path="/menu" element={<MenuPage />} />
+              <Route path="/shopping-cart" element={<ShoppingCartPage />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/dishdetail/:id" element={<DishDetailPage/>} />
+            </Routes>
+          </Container>
+        </main>
+      </Router>
     </AppProvider>
   );
 }

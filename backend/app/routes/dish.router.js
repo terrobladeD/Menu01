@@ -18,11 +18,8 @@ module.exports = app => {
     // Make a single dish valid or invalid with id
     router.put("/valid/:id", dish.updateValidState);
 
-    // // todo Delete a single dish with id
-    // router.delete("/:id", null);
-
-    // todo Create a new order
-
+    // Update a single dish's price
+    router.put("/price/:id", dish.updatePrice);
 
     app.use('/api/dish', router);
 };

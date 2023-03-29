@@ -1,19 +1,31 @@
-import React from 'react';
+import React,{useContext}  from 'react';
+import AppContext from '../context/AppContext';
 import { Card, Button, Row, Col } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
-function DishItem({ dish, onAddToCart, onRemoveFromCart }) {
-  const handleAddToCart = () => {
+function DishItem({ dish, onAddToCart, onRemoveFromCart}) {
+  const {handleDishSelect} = useContext(AppContext);
+
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
     onAddToCart(dish);
   };
 
-  const handleRemoveFromCart = () => {
+  const handleRemoveFromCart = (e) => {
+    e.stopPropagation();
     onRemoveFromCart(dish);
   };
 
+  const navigate = useNavigate();
+  const handleItemClick = () => {
+    handleDishSelect(dish)
+    navigate(`/dishdetail/${dish.id}`,{state:{dish}});
+  };
+
   return (
-    <Card className="mb-4">
-      <Row className="align-items-center">
-        <Col xs={4} md={3}>
+    <Card className="mb-4" onClick={handleItemClick} >
+      <Row className="align-items-center" >
+        <Col xs={4} md={3} >
           <Card.Img
             src={dish.image}
             alt={dish.name}

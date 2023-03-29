@@ -7,7 +7,7 @@ function HomePage() {
     <div className="home-page">
       <div className="image-container">
         <img
-          src="/imgs/restaurant_poster.png"
+          src="/restaurant_poster.png"
           alt="resturant img"
           className="w-100"
         />

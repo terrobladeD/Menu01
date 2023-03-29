@@ -19,7 +19,9 @@ CREATE TABLE
 IF NOT EXISTS `dishes` (
 	`id` INTEGER NOT NULL auto_increment,
 	`name` VARCHAR (255),
+	`short_name` VARCHAR (255),
 	`description` VARCHAR (255),
+	`full_description` VARCHAR (255),
 	`price_ori` DOUBLE PRECISION,
 	`price_cur` DOUBLE PRECISION,
 	`is_sold_out` TINYINT (1),
@@ -50,33 +52,35 @@ SET NULL ON UPDATE CASCADE
 //////////////////////////////////////////////////////////////////////
 
 //////////////////
-INSERT INTO dishes (name, description, price_ori, price_cur, is_sold_out, type, is_valid, pict_url, createdAt, updatedAt) VALUES
-('Atlantic Salmon', 'description for Atlantic Salmon', 50, 50, false, 'MAINS', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Atlantic_Salmon.png?v=1677990074', NOW(), NOW()),
-('BBQ Prok Ribs', 'description for BBQ Prok Ribs', 65, 65, false, 'MAINS', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/BBQ_Prok_Ribs.png?v=1677990074', NOW(), NOW()),
-('Bruschetta', 'description for Bruschetta', 16, 16, false, 'STARTERS & SALADS', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Bruschetta.png?v=1677990071', NOW(), NOW()),
-('Buffalo Wings', 'description for Buffalo Wings', 30, 30, false, 'STARTERS & SALADS', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Buffalo_Wings.png?v=1677990071', NOW(), NOW()),
-('Caesar Salad', 'description for Caesar Salad', 35, 35, false, 'STARTERS & SALADS', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Caesar_Salad.png?v=1677990071', NOW(), NOW()),
-('Carnivore Pizza', 'description for Carnivore Pizza', 50, 50, false, 'PIZZA', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Carnivore_Pizza.png?v=1677990073', NOW(), NOW()),
-('Chicken Parmigiana', 'description for Chicken Parmigiana', 50, 50, false, 'MAINS', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Chicken_Parmigiana.png?v=1677990072', NOW(), NOW()),
-('Club Sandwich', 'description for Club Sandwich', 30, 30, false, 'BURGERS & SANDWICHES', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Club_Sandwich.png?v=1677990072', NOW(), NOW()),
-('Crispy Fired Noodles', 'description for Crispy Fired Noodles', 30, 30, false, 'ASIAN CHOICE', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Crispy_Fired_Noodles.png?v=1677990072', NOW(), NOW()),
-('Fettuccini Marinara', 'description for Fettuccini Marinara', 45, 45, false, 'MAINS', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Fettuccini_Marinara.png?v=1677990071', NOW(), NOW()),
-('Four Season Pizza', 'description for Four Season Pizza', 50, 50, false, 'PIZZA', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Four_Season_Pizza.png?v=1677990073', NOW(), NOW()),
-('Hawaiian Pizza', 'description for Hawaiian Pizza', 50, 50, false, 'PIZZA', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Hawaiian_Pizza.png?v=1677990071', NOW(), NOW()),
-('Lagua Monster Burger', 'description for Lagua Monster Burger', 38, 38, false, 'BURGERS & SANDWICHES', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Lagua_Monster_Burger.png?v=1677990072', NOW(), NOW()),
-('Laguna Chicken Fillet Burger', 'description for Laguna Chicken Fillet Burger', 38, 38, false, 'BURGERS & SANDWICHES', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Laguna_Chicken_Fillet_Burger.png?v=1677990071', NOW(), NOW()),
-('Laguna Mee Mak', 'description for Laguna Mee Mak', 30, 30, false, 'ASIAN CHOICE', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Laguna_Mee_Mak.png?v=1677990072', NOW(), NOW()),
-('Laksa Combination', 'description for Laksa Combination', 30, 30, false, 'ASIAN CHOICE', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Laksa_Combination.png?v=1677990070', NOW(), NOW()),
-('Mixed Fried Rice', 'description for Mixed Fried Rice', 40, 40, false, 'ASIAN CHOICE', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Mixed_Fried_Rice.png?v=1677990073', NOW(), NOW()),
-('Mongolian Lamb', 'description for Mongolian Lamb', 45, 44, false, 'MAINS', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Mongolian_Lamb_dished.png?v=1677990073', NOW(), NOW()),
-('Oven Baked Garlic Bread', 'description for Oven Baked Garlic Bread', 12, 11, false, 'STARTERS & SALADS', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Oven_Baked_Garlic_Bread.png?v=1677990072', NOW(), NOW()),
-('Oxtail Soup', 'description for Oxtail Soup', 40, 39, false, 'MAINS', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Oxtail_Soup.png?v=1677990072', NOW(), NOW()),
-('Penag Char Koay Teow', 'description for Penag Char Koay Teow', 30, 29, false, 'ASIAN CHOICE', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Penag_Char_Koay_Teow.png?v=1677990073', NOW(), NOW()),
-('Prawn Cocktail', 'description for Prawn Cocktail', 35, 34, false, 'STARTERS & SALADS', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Prawn_Cocktail.png?v=1677990070', NOW(), NOW()),
-('Ragu Bolognaise', 'description for Ragu Bolognaise', 35, 34, false, 'MAINS', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Ragu_Bolognaise.png?v=1677990836', NOW(), NOW()),
-('Roasted Half Chicken', 'description for Roasted Half Chicken', 50, 49, false, 'MAINS', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Roasted_Half_Chicken.png?v=1677990073', NOW(), NOW()),
-('Tandoori Chicken Pizza', 'description for Tandoori Chicken Pizza', 50, 49, false, 'PIZZA', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Tandoori_Chicken_Pizza.png?v=1677990073', NOW(), NOW()),
-('Thai Beef Salad', 'description for Thai Beef Salad', 35, 34, false, 'STARTERS & SALADS', true, 'https://cdn.shopify.com/s/files/1/0726/4033/2093/files/Thai_Beef_Salad.png?v=1677990073', NOW(), NOW());
+INSERT INTO dishes (name, short_name, description, full_description, price_ori, price_cur, is_sold_out, type, is_valid, pict_url, createdAt, updatedAt) VALUES
+('Atlantic Salmon', 'AS', 'description for Atlantic Salmon', 'Full description for Atlantic Salmon', 50, 50, false, 'MAINS', true, 'http://localhost:8080/images/Atlantic Salmon.png', NOW(), NOW()),
+('BBQ Prok Ribs', 'BPR', 'description for BBQ Prok Ribs', 'Full description for BBQ Prok Ribs', 65, 65, false, 'MAINS', true, 'http://localhost:8080/images/BBQ Prok Ribs.png', NOW(), NOW()),
+('Bruschetta', 'B', 'description for Bruschetta', 'Full description for Bruschetta', 16, 16, false, 'STARTERS & SALADS', true, 'http://localhost:8080/images/Bruschetta.png', NOW(), NOW()),
+('Buffalo Wings', 'BW', 'description for Buffalo Wings', 'Full description for Buffalo Wings', 30, 30, false, 'STARTERS & SALADS', true, 'http://localhost:8080/images/Buffalo Wings.png', NOW(), NOW()),
+('Caesar Salad', 'CS', 'description for Caesar Salad', 'Full description for Caesar Salad', 35, 35, false, 'STARTERS & SALADS', true, 'http://localhost:8080/images/Caesar Salad.png', NOW(), NOW()),
+('Carnivore Pizza', 'CP', 'description for Carnivore Pizza', 'Full description for Carnivore Pizza', 50, 50, false, 'PIZZA', true, 'http://localhost:8080/images/Carnivore Pizza.png', NOW(), NOW()),
+('Chicken Parmigiana', 'CP', 'description for Chicken Parmigiana', 'Full description for Chicken Parmigiana', 50, 50, false, 'MAINS', true, 'http://localhost:8080/images/Chicken Parmigiana.png', NOW(), NOW()),
+('Club Sandwich', 'CS', 'description for Club Sandwich', 'Full description for Club Sandwich', 30, 30, false, 'BURGERS & SANDWICHES', true, 'http://localhost:8080/images/Club Sandwich.png', NOW(), NOW()),
+('Crispy Fired Noodles', 'CFN', 'description for Crispy Fired Noodles', 'Full description for Crispy Fired Noodles', 30, 30, false, 'ASIAN CHOICE', true, 'http://localhost:8080/images/Crispy Fired Noodles.png', NOW(), NOW()),
+('Fettuccini Marinara', 'FM', 'description for Fettuccini Marinara', 'Full description for Fettuccini Marinara', 45, 45, false, 'MAINS', true, 'http://localhost:8080/images/Fettuccini Marinara.png', NOW(), NOW()),
+('Four Season Pizza', 'FSP', 'description for Four Season Pizza', 'Full description for Four Season Pizza', 50, 50, false, 'PIZZA', true, 'http://localhost:8080/images/Four Season Pizza.png', NOW(), NOW()),
+('Hawaiian Pizza', 'HP', 'description for Hawaiian Pizza', 'Full description for Hawaiian Pizza', 50, 50, false, 'PIZZA', true, 'http://localhost:8080/images/Hawaiian Pizza.png', NOW(), NOW()),
+('Lagua Monster Burger', 'LMB', 'description for Lagua Monster Burger', 'Full description for Lagua Monster Burger', 38, 38, false, 'BURGERS & SANDWICHES', true, 'http://localhost:8080/images/Lagua Monster Burger.png', NOW(), NOW()),
+('Laguna Chicken Fillet Burger', 'LCFB', 'description for Laguna Chicken Fillet Burger', 'Full description for Laguna Chicken Fillet Burger', 38, 38, false, 'BURGERS & SANDWICHES', true, 'http://localhost:8080/images/Laguna Chicken Fillet Burger.png', NOW(), NOW()),
+('Laguna Mee Mak', 'LMM', 'description for Laguna Mee Mak', 'Full description for Laguna Mee Mak', 30, 30, false, 'ASIAN CHOICE', true, 'http://localhost:8080/images/Laguna Mee Mak.png', NOW(), NOW()),
+('Laksa Combination', 'LC', 'description for Laksa Combination', 'Full description for Laksa Combination', 30, 30, false, 'ASIAN CHOICE', true, 'http://localhost:8080/images/Laksa Combination.png', NOW(), NOW()),
+('Mixed Fried Rice', 'MFR', 'description for Mixed Fried Rice', 'Full description for Mixed Fried Rice', 40, 40, false, 'ASIAN CHOICE', true, 'http://localhost:8080/images/Mixed Fried Rice.png', NOW(), NOW()),
+('Mongolian Lamb', 'ML', 'description for Mongolian Lamb', 'Full description for Mongolian Lamb', 45, 44, false, 'MAINS', true, 'http://localhost:8080/images/Mongolian Lamb.png', NOW(), NOW()),
+('Oven Baked Garlic Bread', 'OBGB', 'description for Oven Baked Garlic Bread', 'Full description for Oven Baked Garlic Bread', 12, 11, false, 'STARTERS & SALADS', true, 'http://localhost:8080/images/Oven Baked Garlic Bread.png', NOW(), NOW()),
+('Oxtail Soup', 'OS', 'description for Oxtail Soup', 'Full description for Oxtail Soup', 40, 39, false, 'MAINS', true, 'http://localhost:8080/images/Oxtail Soup.png', NOW(), NOW()),
+('Penag Char Koay Teow', 'PCKT', 'description for Penag Char Koay Teow', 'Full description for Penag Char Koay Teow', 30, 29, false, 'ASIAN CHOICE', true, 'http://localhost:8080/images/Penag Char Koay Teow.png', NOW(), NOW()),
+('Prawn Cocktail', 'PC', 'description for Prawn Cocktail', 'Full description for Prawn Cocktail', 35, 34, false, 'STARTERS & SALADS', true, 'http://localhost:8080/images/Prawn Cocktail.png', NOW(), NOW()),
+('Ragu Bolognaise', 'RB', 'description for Ragu Bolognaise', 'Full description for Ragu Bolognaise', 35, 34, false, 'MAINS', true, 'http://localhost:8080/images/Ragu Bolognaise.png', NOW(), NOW()),
+('Roasted Half Chicken', 'RHC', 'description for Roasted Half Chicken', 'Full description for Roasted Half Chicken', 50, 49, false, 'MAINS', true, 'http://localhost:8080/images/Roasted Half Chicken.png', NOW(), NOW()),
+('Tandoori Chicken Pizza', 'TCP', 'description for Tandoori Chicken Pizza', 'Full description for Tandoori Chicken Pizza', 50, 49, false, 'PIZZA', true, 'http://localhost:8080/images/Tandoori Chicken Pizza.png', NOW(), NOW()),
+('Thai Beef Salad', 'TBS', 'description for Thai Beef Salad', 'Full description for Thai Beef Salad', 35, 34, false, 'STARTERS & SALADS', true, 'http://localhost:8080/images/Thai Beef Salad.png', NOW(), NOW());
+
+
 
 
 INSERT INTO orders (total_price, table_num, date, email, status, additional_info, createdAt, updatedAt)
