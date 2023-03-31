@@ -1,7 +1,8 @@
 import { Container, Navbar, Nav } from 'react-bootstrap';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import OrdersByDate from './components/OrdersByDate.component';
-import SoldOutDishes from './components/SoldOutDishes.component';
+import DishPage from './pages/DishPage';
+import OrderPage from './pages/OrderPage';
+import HomePage from './pages/HomePage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Item>
-              <Link to="/" className="nav-link">
+              <Link to="/order" className="nav-link">
                 Orders
               </Link>
             </Nav.Item>
@@ -31,8 +32,9 @@ function App() {
       <main style={{ marginTop: '8vh' }}>
         <Container>
           <Routes>
-            <Route exact path="/" element={<OrdersByDate />} />
-            <Route path="/dish" element={<SoldOutDishes />} />
+          <Route exact path="/" element={<HomePage />} />
+            <Route path="/order" element={<OrderPage />} />
+            <Route path="/dish" element={<DishPage />} />
           </Routes>
         </Container>
       </main>

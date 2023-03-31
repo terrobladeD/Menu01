@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, InputGroup, FormControl, Row, Col } from 'react-bootstrap';
-
-function OrdersByDate() {
+function OrderPage() {
     const [orders, setOrders] = useState([]);
     const [dishNames, setDishNames] = useState({});
+    const [dishShortNames, setDishShortNames] = useState({});
+    const [showShortName, setShowShortName] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
 
     useEffect(() => {
@@ -13,13 +14,18 @@ function OrdersByDate() {
 
     const fetchDishNames = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/dish');
+            const response = await fetch('http://localhost:8080/api/dish/all');
             const data = await response.json();
             const dishNameMap = data.reduce((map, dish) => {
                 map[dish.id] = dish.name;
                 return map;
             }, {});
             setDishNames(dishNameMap);
+            const dishShortNames = data.reduce((map, dish) => {
+                map[dish.id] = dish.short_name;
+                return map;
+            }, {});
+            setDishShortNames(dishShortNames);
         } catch (error) {
             console.error('Error fetching dish names:', error);
         }
@@ -45,6 +51,35 @@ function OrdersByDate() {
         setSelectedDate(e.target.value);
     };
 
+    const handleFinishStatus = (order) => {
+        const orderId = order.id;
+        if (!order.status){
+            fetch(`http://localhost:8080/api/order/status/${orderId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Update the orders list with the updated status
+                    const updatedOrders = orders.map(o => {
+                        if (o.id === orderId) {
+                            return { ...o, status: true };
+                        }
+                        return o;
+                    });
+                    setOrders(updatedOrders);
+                    alert(`Order from ${order.table_num} finished`)
+                })
+                .catch(error => {
+                    console.error('Error updating order status:', error);
+                });
+        }
+
+    };
+
+
     return (
         <div>
             <h2>Orders by Date</h2>
@@ -64,7 +99,11 @@ function OrdersByDate() {
                         <tr>
                             <th>Table Number</th>
                             <th>Order Time</th>
-                            <th>Dish Name</th>
+                            <th>Dish Name
+                                <Button variant="link" style={{ fontSize: '0.8em' }} onClick={() => setShowShortName(!showShortName)}>
+                                    {showShortName ? 'Short' : 'Full'}
+                                </Button>
+                            </th>
                             <th>Quantity</th>
                             <th style={{ width: '15vw' }}>Additional Info</th>
                             <th>Total Price</th>
@@ -82,7 +121,7 @@ function OrdersByDate() {
                                                 <td rowSpan={order.detail.length}>{new Date(order.date).toLocaleTimeString()}</td>
                                             </>
                                         )}
-                                        <td>{dishNames[detail.dishId]}</td>
+                                        <td>{showShortName ? dishShortNames[detail.dishId] : dishNames[detail.dishId]}</td>
                                         <td>{detail.quantity}</td>
                                         {index === 0 && (
                                             <>
@@ -91,9 +130,7 @@ function OrdersByDate() {
                                                 <td rowSpan={order.detail.length}>
                                                     <Button
                                                         variant={order.status ? "success" : "danger"}
-                                                        onClick={() => {
-                                                            // Handle status change here, e.g., update the server
-                                                        }}
+                                                        onClick={() => handleFinishStatus(order)}
                                                     >
                                                         {order.status ? 'Finished' : 'Unfinished'}
                                                     </Button>
@@ -112,5 +149,4 @@ function OrdersByDate() {
     );
 }
 
-export default OrdersByDate;
-
+export default OrderPage;
