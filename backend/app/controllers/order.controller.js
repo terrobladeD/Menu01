@@ -1,5 +1,6 @@
 const db = require("../models");
 const { Op } = require('sequelize');
+const websocket = require('../others/websocket');
 const Order = db.order;
 const Detail = db.detail;
 const Dish = db.dish;
@@ -186,6 +187,9 @@ exports.create = (req, res) => {
                     orderId: orderData.id,
                     message: "Order successfully created"
                 });
+                //send the message to the front end
+                websocket.broadcastMessage(JSON.stringify({ message: "New order received", orderId: orderData.id }));
+
             }
             )
             return
