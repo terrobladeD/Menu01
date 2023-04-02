@@ -1,11 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, InputGroup, FormControl, Row, Col } from 'react-bootstrap';
+import useWebSocket from 'react-use-websocket';
+const WS_URL = 'ws://localhost:8080';
+
 function OrderPage() {
     const [orders, setOrders] = useState([]);
     const [dishNames, setDishNames] = useState({});
     const [dishShortNames, setDishShortNames] = useState({});
     const [showShortName, setShowShortName] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+    const { } = useWebSocket(WS_URL, {
+        onOpen: () => {
+            console.log('WebSocket connection established.');
+        },
+        onMessage: (event) => {
+            const newMessage = event.data;
+            console.log('WebSocket received a new message:', newMessage);
+            alert('New order has arrived!');
+            fetchOrdersByDate(selectedDate);
+        },
+    });
 
     useEffect(() => {
         fetchDishNames();
@@ -53,7 +67,7 @@ function OrderPage() {
 
     const handleFinishStatus = (order) => {
         const orderId = order.id;
-        if (!order.status){
+        if (!order.status) {
             fetch(`http://localhost:8080/api/order/status/${orderId}`, {
                 method: 'PUT',
                 headers: {
