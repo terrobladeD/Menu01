@@ -1,12 +1,14 @@
 import { useState } from "react";
 
 function EditDish(props) {
-  const [name, setName] = useState(props.name);
-  const [description, setDescription] = useState(props.description);
-  const [price_ori, setPriceOri] = useState(props.price_ori);
-  const [price_cur, setPriceCur] = useState(props.price_cur);
-  const [is_sold_out, setIsSoldOut] = useState(props.is_sold_out);
-  const [is_valid, setIsValid] = useState(props.is_valid);
+  const [name, setName] = useState(props.dish.name);
+  const [short_name, setShortName] = useState(props.dish.short_name);
+  const [description, setDescription] = useState(props.dish.description);
+  const [full_description, setFullDescription] = useState(props.dish.full_description);
+  const [price_ori, setPriceOri] = useState(props.dish.price_ori);
+  const [price_cur, setPriceCur] = useState(props.dish.price_cur);
+  const [type, setType] = useState(props.dish.type);
+  const [pict_url, setPictUrl] = useState(props.dish.pict_url);
 
   const handleEditClick = (e) => {
     e.preventDefault();
@@ -17,118 +19,108 @@ function EditDish(props) {
   return (
     <div>
       <form>
-        <div className="form-group">
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            className="form-control"
-            id="name"
-            value={name}
-            readOnly
-          />
-          <button
-            type="button"
-            className="btn btn-outline-secondary"
-            onClick={() => setName("")}
-          >
-            Edit
-          </button>
+        <div className="form-row">
+          <div className="input-group d-flex align-items-center">
+            <label htmlFor="name" className="col-3">Name</label>
+            <input
+              type="text"
+              className="form-control col-9"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+
+          <div className="input-group d-flex align-items-center">
+            <label htmlFor="short_name" className="col-3">Short Name</label>
+            <input
+              type="text"
+              className="form-control col-9"
+              id="short_name"
+              value={short_name}
+              onChange={(e) => setShortName(e.target.value)}
+            />
+          </div>
+
+          <div className="input-group d-flex align-items-center">
+            <label htmlFor="price_ori" className="col-3">Original Price</label>
+            <input
+              type="text"
+              className="form-control col-9"
+              id="price_ori"
+              value={price_ori}
+              onChange={(e) => setPriceOri(e.target.value)}
+            />
+          </div>
+
+          <div className="input-group d-flex align-items-center">
+            <label htmlFor="price_cur" className="col-3">Current Price</label>
+            <input
+              type="text"
+              className="form-control col-9"
+              id="price_cur"
+              value={price_cur}
+              onChange={(e) => setPriceCur(e.target.value)}
+            />
+          </div>
+
+          <div className="input-group d-flex align-items-center">
+            <label htmlFor="type" className="col-3">Type</label>
+            <input
+              type="text"
+              className="form-control col-9"
+              id="type"
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+            />
+          </div>
         </div>
-        <div className="form-group">
-          <label htmlFor="description">Description</label>
-          <input
-            type="text"
-            className="form-control"
+
+        <div className="input-group d-flex align-items-center my-3">
+          <label htmlFor="description" className="col-3">Description</label>
+          <textarea
+            className="form-control col-9"
             id="description"
+            rows="2"
             value={description}
-            readOnly
+            onChange={(e) => setDescription(e.target.value)}
           />
-          <button
-            type="button"
-            className="btn btn-outline-secondary"
-            onClick={() => setDescription("")}
-          >
-            Edit
-          </button>
         </div>
-        <div className="form-group">
-          <label htmlFor="price_ori">Original Price</label>
+
+        <div className="input-group d-flex align-items-center my-3">
+          <label htmlFor="full_description" className="col-3">Full Description</label>
+          <textarea
+            className="form-control col-9"
+            id="full_description"
+            rows="4"
+            value={full_description}
+            onChange={(e) => setFullDescription(e.target.value)}
+          />
+        </div>
+
+        <div className="input-group d-flex align-items-center my-3">
+          <label htmlFor="pict_url" className="col-3">Picture URL</label>
           <input
             type="text"
-            className="form-control"
-            id="price_ori"
-            value={price_ori}
-            readOnly
+            className="form-control col-9"
+            id="pict_url"
+            value={pict_url}
+            onChange={(e) => setPictUrl(e.target.value)}
           />
-          <button
-            type="button"
-            className="btn btn-outline-secondary"
-            onClick={() => setPriceOri("")}
-          >
-            Edit
-          </button>
         </div>
-        <div className="form-group">
-          <label htmlFor="price_cur">Current Price</label>
-          <input
-            type="text"
-            className="form-control"
-            id="price_cur"
-            value={price_cur}
-            readOnly
-          />
-          <button
-            type="button"
-            className="btn btn-outline-secondary"
-            onClick={() => setPriceCur("")}
-          >
-            Edit
-          </button>
-        </div>
-        <div className="form-group">
-          <label htmlFor="is_sold_out">Sold Out</label>
-          <input
-            type="checkbox"
-            className="form-control"
-            id="is_sold_out"
-            checked={is_sold_out}
-            disabled
-          />
-          <button
-            type="button"
-            className="btn btn-outline-secondary"
-            onClick={() => setIsSoldOut(!is_sold_out)}
-          >
-            Edit
-          </button>
-        </div>
-        <div className="form-group">
-          <label htmlFor="is_valid">Valid</label>
-          <input
-            type="checkbox"
-            className="form-control"
-            id="is_valid"
-            checked={is_valid}
-            disabled
-          />
-          <button
-            type="button"
-            className="btn btn-outline-secondary"
-            onClick={() => setIsValid(!is_valid)}
-          >
-            Edit
-          </button>
-        </div>
+
         <button
           type="submit"
           className="btn btn-primary"
           onClick={handleEditClick}
-        >
-          Submit
+        >          Submit
         </button>
       </form>
     </div>
   );
 }
 
+
+
 export default EditDish;
+
