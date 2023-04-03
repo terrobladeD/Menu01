@@ -5,10 +5,10 @@ const http = require('http');
 const websocket = require('./app/others/websocket');
 const app = express();
 
+// only allow specific ports to query the server
 var corsOptions = {
   origin: ["http://localhost:8081", "http://localhost:8082"]
 };
-
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
@@ -34,6 +34,7 @@ app.get("/", (req, res) => {
 
 require("./app/routes/dish.router")(app);
 require("./app/routes/order.router")(app);
+require("./app/routes/JWT.router").configureRoutes(app);
 
 // method to handle the image query from api
 const imagesPath = path.join(__dirname, 'images/dishes');

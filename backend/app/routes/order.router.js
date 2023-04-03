@@ -1,5 +1,6 @@
 module.exports = app => {
     const order = require("../controllers/order.controller.js");
+    const { authenticateJWT } = require('./JWT.router.js');
 
     var router = require("express").Router();
 
@@ -7,7 +8,7 @@ module.exports = app => {
     router.get("/bydate/:date", order.findOrdersByDate);
 
     // Retrieve a single Order with id
-    router.get("/:id", order.findOne);
+    router.get("/:id", authenticateJWT,order.findOne);
 
     // Make a order finished
     router.put("/status/:id", order.updateStatusState);
