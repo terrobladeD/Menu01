@@ -9,11 +9,57 @@ function EditDish(props) {
   const [price_cur, setPriceCur] = useState(props.dish.price_cur);
   const [type, setType] = useState(props.dish.type);
   const [pict_url, setPictUrl] = useState(props.dish.pict_url);
+  const [imageFile, setImageFile] = useState(null);
 
-  const handleEditClick = (e) => {
+  const handleEditClick = async (e) => {
     e.preventDefault();
-    alert("Edit successful");
-    // Here you can write code to submit the edited dish to the backend API
+
+    // Prepare the updated dish data
+    const updatedDish = {
+      name,
+      short_name,
+      description,
+      full_description,
+      price_ori,
+      price_cur,
+      type
+    };
+
+    try {
+      const authData = JSON.parse(localStorage.getItem('authData'));
+      const token = authData && authData.token;
+      const response = await fetch(`http://localhost:8080/api/dish/edit/${props.dish.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
+        body: JSON.stringify(updatedDish),
+      });
+
+      if (response.ok) {
+        alert("Edit successful");
+        // You can also perform additional actions here, like refreshing the dish list, etc.
+      } else {
+        console.error("Error updating dish:", response.statusText);
+        alert("Error updating dish. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error updating dish:", error);
+      alert("Error updating dish. Please try again.");
+    }
+
+  };
+
+  // Function to handle file input change
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]);
+    setPictUrl(URL.createObjectURL(e.target.files[0]));
+  };
+
+  // Function to call the backend API for image upload (left empty)
+  const handleImageUpload = () => {
+    // Call your backend API for image upload here
   };
 
   return (
@@ -98,15 +144,33 @@ function EditDish(props) {
           />
         </div>
 
+        <div className="d-flex align-items-center my-3" >
+          <div className="col-3">Picture Preview</div>
+          <div className="col-9">
+            <img
+              src={pict_url}
+              alt="Dish"
+              style={{ width: "150px", height: "150px", objectFit: "cover" }}
+            />
+          </div>
+        </div>
+
         <div className="input-group d-flex align-items-center my-3">
-          <label htmlFor="pict_url" className="col-3">Picture URL</label>
+          <label htmlFor="upload" className="col-3">Upload New Picture</label>
           <input
-            type="text"
-            className="form-control col-9"
-            id="pict_url"
-            value={pict_url}
-            onChange={(e) => setPictUrl(e.target.value)}
+            type="file"
+            className="form-control-file col-6"
+            id="upload"
+            accept="image/*"
+            onChange={handleImageChange}
           />
+          <button
+            type="button"
+            className="btn btn-primary col-3"
+            onClick={handleImageUpload}
+          >
+            Upload
+          </button>
         </div>
 
         <button

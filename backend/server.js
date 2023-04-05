@@ -37,8 +37,10 @@ require("./app/routes/order.router")(app);
 require("./app/routes/JWT.router").configureRoutes(app);
 
 // method to handle the image query from api
+const imageUpload = require('./app/others/imageUpload');
 const imagesPath = path.join(__dirname, 'images/dishes');
 app.use('/images', express.static(imagesPath));
+app.use('/images', imageUpload);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

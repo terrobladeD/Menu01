@@ -10,10 +10,29 @@ function DishPage() {
 
   useEffect(() => {
     async function fetchDishes() {
-      const response = await fetch("http://localhost:8080/api/dish/all");
-      const data = await response.json();
-      setDishes(data);
+      try {
+        const authData = JSON.parse(localStorage.getItem('authData'));
+        const token = authData && authData.token;
+
+        const response = await fetch("http://localhost:8080/api/dish/all", {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Error fetching dishes');
+        }
+
+        const data = await response.json();
+        setDishes(data);
+      } catch (error) {
+        console.error('Error fetching dishes:', error);
+        setDishes([]);
+      }
     }
+
     fetchDishes();
   }, []);
 
@@ -31,10 +50,13 @@ function DishPage() {
 
   const handleSoldOutToggle = async (dish) => {
     try {
+      const authData = JSON.parse(localStorage.getItem('authData'));
+      const token = authData && authData.token;
       const response = await fetch(`http://localhost:8080/api/dish/soldout/${dish.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `${token}`,
         },
       });
 
@@ -45,6 +67,11 @@ function DishPage() {
           }
           return d;
         });
+        if (!dish.is_sold_out) {
+          alert(`${dish.name} was put sold out`);
+        } else {
+          alert(`${dish.name} was put in stock`);
+        }
         setDishes(updatedDishes);
       } else {
         throw new Error('Failed to update sold out status');
@@ -57,10 +84,13 @@ function DishPage() {
 
   const handleValidToggle = async (dish) => {
     try {
+      const authData = JSON.parse(localStorage.getItem('authData'));
+      const token = authData && authData.token;
       const response = await fetch(`http://localhost:8080/api/dish/valid/${dish.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `${token}`,
         },
       });
 
@@ -71,6 +101,11 @@ function DishPage() {
           }
           return d;
         });
+        if (dish.is_valid) {
+          alert(`${dish.name} was put Invalid`);
+        } else {
+          alert(`${dish.name} was put Valid`);
+        }
         setDishes(updatedDishes);
       } else {
         throw new Error('Failed to update valid status');
@@ -86,14 +121,14 @@ function DishPage() {
     setSelectedDish(dish);
   };
 
-  const handleDeleteClick = (dish) => {
-    if (window.confirm(`Are you sure you want to delete ${dish.name}?`)) {
-      const updatedDishes = dishes.filter((d) => d.id !== dish.id);
-      setDishes(updatedDishes);
-      setSelectedDish(null);
-      alert("Delete successful!");
-    }
-  };
+  // const handleDeleteClick = (dish) => {
+  //   if (window.confirm(`Are you sure you want to delete ${dish.name}?`)) {
+  //     const updatedDishes = dishes.filter((d) => d.id !== dish.id);
+  //     setDishes(updatedDishes);
+  //     setSelectedDish(null);
+  //     alert("Delete successful!");
+  //   }
+  // };
 
   const handleEditSubmit = () => {
     alert("Edit successful!");
@@ -121,9 +156,9 @@ function DishPage() {
         <thead>
           <tr>
             <th onClick={() => handleSort('name')}>Name
-            {sort.field === 'name' && (sort.order === 'asc' ? '▲' : '▼')}</th>
+              {sort.field === 'name' && (sort.order === 'asc' ? '▲' : '▼')}</th>
             <th onClick={() => handleSort('type')}>Type
-            {sort.field === 'type' && (sort.order === 'asc' ? '▲' : '▼')}</th>
+              {sort.field === 'type' && (sort.order === 'asc' ? '▲' : '▼')}</th>
             <th>Price (Original)</th>
             <th>Price (Current)</th>
             <th>
@@ -142,7 +177,7 @@ function DishPage() {
                 </button>
               </OverlayTrigger>
             </th>
-            <th style={{ display: "none" }}>Actions</th>
+            <th >Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -168,13 +203,13 @@ function DishPage() {
                   {dish.is_valid ? "Yes" : "No"}
                 </button>
               </td>
-              <td style={{ display: "none" }}>
+              <td >
                 <button className="btn btn-primary mx-2" onClick={() => handleEditClick(dish)}>
                   Edit
                 </button>
-                <button className="btn btn-danger" onClick={() => handleDeleteClick(dish)}>
+                {/* <button className="btn btn-danger" onClick={() => handleDeleteClick(dish)}>
                   Delete
-                </button>
+                </button> */}
               </td>
             </tr>
           ))

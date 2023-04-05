@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Container, Navbar, Nav } from 'react-bootstrap';
+import { Container, Navbar, Nav, Button } from 'react-bootstrap';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import DishPage from './pages/DishPage';
 import OrderPage from './pages/OrderPage';
@@ -20,10 +20,15 @@ function App() {
     return false;
   });
 
+  const handleLogout = () => {
+    localStorage.removeItem('authData');
+    setIsAuthenticated(false);
+  };
+
   return (
     <Router>
       {isAuthenticated && (
-        <Navbar bg="light" fixed="top" style={{ height: '8vh' }}>
+        <Navbar bg="light" fixed="top" style={{ height: '8vh', display: 'flex', justifyContent: 'space-between' }}>
           <Nav className="mr-auto" style={{ alignItems: 'center' }}>
             <Nav.Item>
               <Link to="/" className="nav-link" style={{ textDecoration: 'none' }}>
@@ -39,6 +44,13 @@ function App() {
               <Link to="/dish" className="nav-link">
                 Dishes
               </Link>
+            </Nav.Item>
+          </Nav>
+          <Nav className="mr-auto" style={{margin:'0 8px 0 0'}}>
+            <Nav.Item>
+              <Button variant="outline-primary" onClick={handleLogout}>
+                Log&nbsp;out
+              </Button>
             </Nav.Item>
           </Nav>
         </Navbar>

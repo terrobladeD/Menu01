@@ -119,22 +119,36 @@ exports.updateValidState = (req, res) => {
 };
 
 // Update a dish's price with an id
-exports.updatePrice = (req, res) => {
+exports.editInfo = (req, res) => {
     const id = req.params.id;
 
-    Dish.update(
-        {
-            price_ori: req.body.price_ori,
-            price_cur: req.body.price_cur,
-        },
-        {
-            where: { id: id },
-        }
-    )
+    // Build the update object dynamically
+    const updateData = {};
+
+    if (req.body.name) updateData.name = req.body.name;
+    if (req.body.short_name) updateData.short_name = req.body.short_name;
+    if (req.body.type) updateData.type = req.body.type;
+    if (req.body.description) {
+        updateData.description = req.body.description;
+        updateData.full_description = req.body.description;
+    }
+    if (req.body.price_ori) updateData.price_ori = req.body.price_ori;
+    if (req.body.price_cur) updateData.price_cur = req.body.price_cur;
+
+    // If updateData is empty, don't perform the update
+    if (Object.keys(updateData).length === 0) {
+        return res.send({
+            message: `Request body is empty. No updates were made for dish with id=${id}.`,
+        });
+    }
+
+    Dish.update(updateData, {
+        where: { id: id },
+    })
         .then((num) => {
             if (num == 1) {
                 res.send({
-                    message: "Dish price was updated successfully.",
+                    message: "Dish was updated successfully.",
                 });
             } else {
                 res.send({
@@ -148,4 +162,5 @@ exports.updatePrice = (req, res) => {
             });
         });
 };
+
 

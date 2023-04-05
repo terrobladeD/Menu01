@@ -9,7 +9,7 @@ function OrderPage() {
     const [dishShortNames, setDishShortNames] = useState({});
     const [showShortName, setShowShortName] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
-    const { } = useWebSocket(WS_URL, {
+    useWebSocket(WS_URL, {
         onOpen: () => {
             console.log('WebSocket connection established.');
         },
@@ -28,7 +28,14 @@ function OrderPage() {
 
     const fetchDishNames = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/dish/all');
+            const authData = JSON.parse(localStorage.getItem('authData'));
+            const token = authData && authData.token;
+            const response = await fetch('http://localhost:8080/api/dish/all',{
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            });
             const data = await response.json();
             const dishNameMap = data.reduce((map, dish) => {
                 map[dish.id] = dish.name;
@@ -47,7 +54,14 @@ function OrderPage() {
 
     const fetchOrdersByDate = async (date) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/order/bydate/${date}`);
+            const authData = JSON.parse(localStorage.getItem('authData'));
+            const token = authData && authData.token;
+            const response = await fetch(`http://localhost:8080/api/order/bydate/${date}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            });
             const data = await response.json();
             if (Array.isArray(data) && data.length) {
                 const sortedData = data.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -67,11 +81,14 @@ function OrderPage() {
 
     const handleFinishStatus = (order) => {
         const orderId = order.id;
+        const authData = JSON.parse(localStorage.getItem('authData'));
+        const token = authData && authData.token;
         if (!order.status) {
             fetch(`http://localhost:8080/api/order/status/${orderId}`, {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': token
                 },
             })
                 .then(response => response.json())

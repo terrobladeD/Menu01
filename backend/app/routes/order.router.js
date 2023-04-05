@@ -5,13 +5,13 @@ module.exports = app => {
     var router = require("express").Router();
 
     // Retrieve all Orders in a specific date
-    router.get("/bydate/:date", order.findOrdersByDate);
+    router.get("/bydate/:date", authenticateJWT, order.findOrdersByDate);
 
     // Retrieve a single Order with id
     router.get("/:id", authenticateJWT,order.findOne);
 
     // Make a order finished
-    router.put("/status/:id", order.updateStatusState);
+    router.put("/status/:id", authenticateJWT, order.updateStatusState);
 
     // Create a new Order
     router.post("/", order.create);
