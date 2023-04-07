@@ -45,6 +45,7 @@ router.post('/upload', (req, res) => {
                             req.file.filename = customFileName;
                             res.json({
                                 message: 'Image uploaded successfully',
+                                imageName: customFileName,
                                 file: req.file,
                             });
                         }
@@ -53,6 +54,7 @@ router.post('/upload', (req, res) => {
             } else {
                 res.json({
                     message: 'Image uploaded successfully',
+                    imageName: req.file.filename,
                     file: req.file,
                 });
             }

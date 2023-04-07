@@ -14,6 +14,11 @@ function EditDish(props) {
   const handleEditClick = async (e) => {
     e.preventDefault();
 
+    if (imageFile) {
+      alert("Please upload image at first");
+      return;
+    }
+
     // Prepare the updated dish data
     const updatedDish = {
       name,
@@ -22,7 +27,8 @@ function EditDish(props) {
       full_description,
       price_ori,
       price_cur,
-      type
+      type,
+      pict_url
     };
 
     try {
@@ -39,7 +45,7 @@ function EditDish(props) {
 
       if (response.ok) {
         alert("Edit successful");
-        // You can also perform additional actions here, like refreshing the dish list, etc.
+        window.location.reload();
       } else {
         console.error("Error updating dish:", response.statusText);
         alert("Error updating dish. Please try again.");
@@ -58,8 +64,42 @@ function EditDish(props) {
   };
 
   // Function to call the backend API for image upload (left empty)
-  const handleImageUpload = () => {
-    // Call your backend API for image upload here
+  const handleImageUpload = async () => {
+    if (!imageFile) {
+      alert("Please select an image to upload.");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("image", imageFile);
+      formData.append("name", name);
+
+      const authData = JSON.parse(localStorage.getItem("authData"));
+      const token = authData && authData.token;
+
+      const response = await fetch("http://localhost:8080/images/upload", {
+        method: "POST",
+        headers: {
+          Authorization: token,
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const imageUrl = `http://localhost:8080/images/${data.imageName}`;
+        setPictUrl(imageUrl);
+        alert("Picture update successful");
+        setImageFile(null);
+      } else {
+        console.error("Error uploading image:", response.statusText);
+        alert("Error uploading image. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      alert("Error uploading image. Please try again.");
+    }
   };
 
   return (
@@ -127,7 +167,7 @@ function EditDish(props) {
           <textarea
             className="form-control col-9"
             id="description"
-            rows="2"
+            rows="1"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
@@ -138,44 +178,46 @@ function EditDish(props) {
           <textarea
             className="form-control col-9"
             id="full_description"
-            rows="4"
+            rows="3"
             value={full_description}
             onChange={(e) => setFullDescription(e.target.value)}
           />
         </div>
 
-        <div className="d-flex align-items-center my-3" >
-          <div className="col-3">Picture Preview</div>
-          <div className="col-9">
-            <img
-              src={pict_url}
-              alt="Dish"
-              style={{ width: "150px", height: "150px", objectFit: "cover" }}
-            />
-          </div>
-        </div>
-
         <div className="input-group d-flex align-items-center my-3">
-          <label htmlFor="upload" className="col-3">Upload New Picture</label>
-          <input
-            type="file"
-            className="form-control-file col-6"
-            id="upload"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
-          <button
-            type="button"
-            className="btn btn-primary col-3"
-            onClick={handleImageUpload}
-          >
-            Upload
-          </button>
+          <div className="d-flex">
+            <div className="col-6">
+              <label htmlFor="preview" className="d-block mb-2">Picture Preview</label>
+              <img
+                id="preview"
+                src={pict_url}
+                alt="Dish"
+                style={{ width: "150px", height: "150px", objectFit: "cover", borderRadius: "20px" }}
+              />
+            </div>
+            <div className="d-flex flex-column col-6">
+              <label htmlFor="upload" className="mb-2">Upload New Picture</label>
+              <input
+                type="file"
+                className="form-control-file mb-2"
+                id="upload"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+              <button
+                type="button"
+                className="btn btn-primary mt-auto"
+                onClick={handleImageUpload}
+              >
+                Upload
+              </button>
+            </div>
+          </div>
         </div>
 
         <button
           type="submit"
-          className="btn btn-primary"
+          className="btn btn-primary col-12"
           onClick={handleEditClick}
         >          Submit
         </button>

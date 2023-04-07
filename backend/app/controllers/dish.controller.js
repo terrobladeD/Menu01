@@ -118,7 +118,7 @@ exports.updateValidState = (req, res) => {
         });
 };
 
-// Update a dish's price with an id
+// Update a dish's info with an id
 exports.editInfo = (req, res) => {
     const id = req.params.id;
 
@@ -128,19 +128,30 @@ exports.editInfo = (req, res) => {
     if (req.body.name) updateData.name = req.body.name;
     if (req.body.short_name) updateData.short_name = req.body.short_name;
     if (req.body.type) updateData.type = req.body.type;
-    if (req.body.description) {
-        updateData.description = req.body.description;
-        updateData.full_description = req.body.description;
-    }
+    if (req.body.description) updateData.description = req.body.description;
+    if (req.body.full_description) updateData.full_description = req.body.description;
     if (req.body.price_ori) updateData.price_ori = req.body.price_ori;
     if (req.body.price_cur) updateData.price_cur = req.body.price_cur;
-
+    if (req.body.pict_url) {
+        // Validate the pict_url format
+        const urlRegex = /^http:\/\/localhost:8080\/images\/[-\w\s]+\.(png|jpg|jpeg|gif)$/i;
+        if (urlRegex.test(req.body.pict_url)) {
+            updateData.pict_url = req.body.pict_url;
+        } else {
+            return res.status(400).send({
+                message: `Invalid pict_url format. The provided URL does not match the expected format.`,
+            });
+        }
+    }
+    
     // If updateData is empty, don't perform the update
     if (Object.keys(updateData).length === 0) {
         return res.send({
             message: `Request body is empty. No updates were made for dish with id=${id}.`,
         });
     }
+
+
 
     Dish.update(updateData, {
         where: { id: id },
