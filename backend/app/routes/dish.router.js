@@ -19,8 +19,14 @@ module.exports = app => {
     // Make a single dish valid or invalid with id
     router.put("/valid/:id", authenticateJWT, dish.updateValidState);
 
-    // Update a single dish's price depreciated todo change it to edit
-    router.put("/edit/:id", authenticateJWT, dish.editInfo);
+    // Edit a dish's all information by its id
+    router.put("/edit/:id", authenticateJWT, dish.editDishInfo);
+
+    // Add a dish
+    router.post("/add", authenticateJWT, dish.addDish);
+
+    // delete a dish
+    router.delete("/delete/:id", authenticateJWT, dish.deleteDish);
 
     app.use('/api/dish', router);
 };

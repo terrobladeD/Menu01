@@ -12,8 +12,7 @@ function App() {
     const authData = JSON.parse(localStorage.getItem('authData'));
     if (authData) {
       const currentTime = new Date().getTime();
-      const expiresIn = 24 * 60 * 60 * 1000; // a day in milliseconds
-      if (authData.expirationTime + expiresIn > currentTime) {
+      if (authData.expirationTime > currentTime) {
         return true;
       }
     }

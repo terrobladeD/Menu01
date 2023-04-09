@@ -119,7 +119,7 @@ exports.updateValidState = (req, res) => {
 };
 
 // Update a dish's info with an id
-exports.editInfo = (req, res) => {
+exports.editDishInfo = (req, res) => {
     const id = req.params.id;
 
     // Build the update object dynamically
@@ -173,5 +173,82 @@ exports.editInfo = (req, res) => {
             });
         });
 };
+
+// Add a new dish to the database
+exports.addDish = (req, res) => {
+    // Validate request
+    if (!req.body.name || !req.body.short_name || !req.body.type || !req.body.pict_url) {
+        return res.status(400).send({
+            message: "Required fields are missing: name, short_name, type, and pict_url are required.",
+        });
+    }
+
+    // Validate pict_url format
+    const urlRegex = /^http:\/\/localhost:8080\/images\/[-\w\s]+\.(png|jpg|jpeg|gif)$/i;
+    if (!urlRegex.test(req.body.pict_url)) {
+        return res.status(400).send({
+            message: `Invalid pict_url format. The provided URL does not match the expected format.`,
+        });
+    }
+
+    // Create a new dish object
+    const newDish = {
+        name: req.body.name,
+        short_name: req.body.short_name,
+        description: req.body.description,
+        full_description: req.body.full_description,
+        price_ori: req.body.price_ori,
+        price_cur: req.body.price_cur,
+        is_sold_out: req.body.is_sold_out || 0,
+        type: req.body.type,
+        is_valid: req.body.is_valid || 1,
+        pict_url: req.body.pict_url,
+    };
+
+    // Save the new dish to the database
+    Dish.create(newDish)
+        .then((data) => {
+            res.send(data);
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || "An error occurred while creating the dish.",
+            });
+        });
+};
+
+
+// Delete a dish from the database
+exports.deleteDish = (req, res) => {
+    const id = req.params.id;
+
+    if (!id) {
+        return res.status(400).send({
+            message: "Id parameter is missing in the request."
+        });
+    }
+
+    Dish.destroy({
+        where: { id: id }
+    })
+    .then(num => {
+        if (num === 1) {
+            res.send({
+                message: "Dish was deleted successfully."
+            });
+        } else {
+            res.status(404).send({
+                message: `Cannot delete dish with id=${id}. Dish was not found or has already been deleted.`
+            });
+        }
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: err.message || "An error occurred while deleting the dish."
+        });
+    });
+};
+
+
 
 

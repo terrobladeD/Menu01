@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import EditDish from "../components/EditDish.component";
+import AddDish from "../components/AddDish.component";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
 
 
@@ -7,6 +8,8 @@ function DishPage() {
   const [dishes, setDishes] = useState([]);
   const [selectedDish, setSelectedDish] = useState(null);
   const [sort, setSort] = useState({ field: 'name', order: 'asc' });
+  const [showAddDishModal, setShowAddDishModal] = useState(false);
+
 
   useEffect(() => {
     async function fetchDishes() {
@@ -121,14 +124,35 @@ function DishPage() {
     setSelectedDish(dish);
   };
 
-  // const handleDeleteClick = (dish) => {
-  //   if (window.confirm(`Are you sure you want to delete ${dish.name}?`)) {
-  //     const updatedDishes = dishes.filter((d) => d.id !== dish.id);
-  //     setDishes(updatedDishes);
-  //     setSelectedDish(null);
-  //     alert("Delete successful!");
-  //   }
-  // };
+  const handleDeleteClick = async (dish) => {
+    if (window.confirm(`Are you sure you want to delete ${dish.name}?`)) {
+      try {
+        const authData = JSON.parse(localStorage.getItem('authData'));
+        const token = authData && authData.token;
+
+        const response = await fetch(`http://localhost:8080/api/dish/delete/${dish.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const updatedDishes = dishes.filter((d) => d.id !== dish.id);
+          setDishes(updatedDishes);
+          setSelectedDish(null);
+          alert("Delete successful!");
+        } else {
+          throw new Error('Failed to delete dish');
+        }
+      } catch (error) {
+        console.error(error);
+        alert('An error occurred while deleting the dish. Please try again.');
+      }
+    }
+  };
+
 
   const handleEditSubmit = () => {
     alert("Edit successful!");
@@ -149,9 +173,37 @@ function DishPage() {
     return dishes.slice().sort(compare);
   };
 
+  const openAddDishModal = () => {
+    setShowAddDishModal(true);
+  };
+
+  const closeAddDishModal = () => {
+    setShowAddDishModal(false);
+  };
+
   return (
     <div className="container mt-5">
       <h1>Dish List</h1>
+      <button onClick={openAddDishModal} className="btn btn-primary">
+        Add Dish
+      </button>
+
+      {showAddDishModal && (
+        <div className="modal" style={{ display: 'block' }}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Add New Dish</h5>
+                <button type="button" className="btn-close" onClick={closeAddDishModal}></button>
+              </div>
+              <div className="modal-body">
+                <AddDish />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <table className="table mt-3">
         <thead>
           <tr>
@@ -207,9 +259,9 @@ function DishPage() {
                 <button className="btn btn-primary mx-2" onClick={() => handleEditClick(dish)}>
                   Edit
                 </button>
-                {/* <button className="btn btn-danger" onClick={() => handleDeleteClick(dish)}>
+                <button className="btn btn-danger" onClick={() => handleDeleteClick(dish)}>
                   Delete
-                </button> */}
+                </button>
               </td>
             </tr>
           ))
