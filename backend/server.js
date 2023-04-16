@@ -32,6 +32,7 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to Menu project" });
 });
 
+//for general http request
 require("./app/routes/dish.router")(app);
 require("./app/routes/order.router")(app);
 require("./app/routes/JWT.router").configureRoutes(app);
@@ -50,6 +51,10 @@ const server = http.createServer(app);
 
 // Set up the WebSocket server using the HTTP server
 websocket.setupWebSocketServer(server);
+
+//email sender
+const emailRoutes = require('./app/routes/emailRoutes');
+app.use('/', emailRoutes);
 
 // Start the server
 server.listen(PORT, () => {

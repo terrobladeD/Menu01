@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Dishseq = sequelize.define("Dishseq", {
+    const Dishseq = sequelize.define("dishseq", {
         type: {
             type: DataTypes.STRING
         },

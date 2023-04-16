@@ -1,6 +1,7 @@
 const db = require("../models");
 const { Op } = require('sequelize');
 const websocket = require('../others/websocket');
+const sendOrderEmail = require('../others/orderEmailSender')
 const Order = db.order;
 const Detail = db.detail;
 const Dish = db.dish;
@@ -131,13 +132,13 @@ exports.create = (req, res) => {
 
     });
 
-    // 1.check the sum of quantity * current = total_price
+    // 1.check the sum of quantity * current >= total_price
     // make the query for each price of dish one by one,
     // after all the promises are resolved, compare the running total to the total
     Promise.all(req.body.details.map(({ dishId }) => Dish.findByPk(dishId)))
         .then(dishes => {
             const sumPrice = dishes.reduce((acc, curr, index) => acc + (curr.price_cur * req.body.details[index].quantity), 0);
-            if (req.body.total_price !== sumPrice) {
+            if (req.body.total_price <= sumPrice) {
                 res.status(404).send({
                     message: "Total Price Mismatch Error!"
                 });
@@ -187,18 +188,46 @@ exports.create = (req, res) => {
                     orderId: orderData.id,
                     message: "Order successfully created"
                 });
-                //send the message to the front end
+                //send the message to the admin front end
                 websocket.broadcastMessage(JSON.stringify({ message: "New order received", orderId: orderData.id }));
 
             }
             )
             return
         })
-
         .catch(err => {
             res.status(404).send({
                 message: "Some error occurred while creating the Order."
             });
             return;
         });
+
+    //3. sent email to customer
+    if (order.email) {
+        const dishIds = req.body.details.map(detail => detail.dishId);
+
+        Dish.findAll({
+            where: {
+                id: {
+                    [Op.in]: dishIds
+                }
+            }
+        })
+            .then(dishes => {
+                const orderDetails = req.body.details.map(detail => {
+                    const dish = dishes.find(d => d.id === detail.dishId);
+                    return {
+                        quantity: detail.quantity,
+                        name: dish.name,
+                        price: dish.price_cur
+                    };
+                });
+
+                sendOrderEmail(order, orderDetails);
+            })
+            .catch(err => {
+                console.error('Error fetching dish details for email:', err);
+            });
+
+    }
 };
