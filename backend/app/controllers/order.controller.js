@@ -231,3 +231,5 @@ exports.create = (req, res) => {
 
     }
 };
+
+// Get the sum of the order for the last 30 days

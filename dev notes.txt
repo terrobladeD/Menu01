@@ -1,0 +1,91 @@
+//system part
+sudo yum update -y 
+sudo su
+nano /etc/ssh/sshd_config
+PasswordAuthentication no //Locate the following line and change it from "no" to "yes":
+service sshd restart
+passwd ec2-user
+//enter the password
+su ec2-user
+//MYSQL part
+sudo rpm -Uvh https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm 
+sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
+sudo yum install mysql-community-server 
+sudo systemctl enable mysqld 
+sudo systemctl start mysqld 
+sudo grep 'temporary password' /var/log/mysqld.log 
+//get the temporary password
+mysql -u root -p
+//then enter the password
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'Qaz980423,';
+FLUSH PRIVILEGES;
+CREATE USER 'remoteuser'@'%' IDENTIFIED BY 'Qaz980423,';
+GRANT ALL PRIVILEGES ON *.* TO 'remoteuser'@'%';
+exit;
+
+// source code building part
+//xftp my file
+sudo yum install -y nodejs
+sudo yum install -y gcc-c++ make //dependcies for bcrypt
+sudo npm install -g pm2
+cd /Menu01-master/backend
+npm i
+pm2 start server.js
+pm2 status // this is check the status of the node
+pm2 stop server.js// this is for stop
+
+//nginx part
+sudo yum install nginx
+sudo tail -f /var/log/nginx/error.log
+sudo service nginx restart 
+//或者 sudo nginx -s reload
+ps aux | grep nginx  // nginx master and worker 用户名一致should be the same
+nano /etc/nginx/conf.d/myapp.conf
+vim nginx.conf
+修改user nginx to root
+
+//修改部分
+chmod +x node_modules/.bin/react-scripts //给权限让nginx运行react
+
+// nginx configuration
+server {
+    listen 80;
+    server_name 3.26.131.96;
+    index index.html;
+
+    # Frontend
+    location /demostore {
+        alias /home/ec2-user/Demo01-AWS02/frontend/build;
+        try_files $uri $uri/ /demostore/index.html;
+    }
+
+    location /demostore/favicon.ico {
+        access_log off;
+        log_not_found off;
+        alias /home/ec2-user/Demo01-AWS02/frontend/build/favicon.ico;
+    }
+
+    # FrontendAdmin
+    location /demoadmin {
+        alias /home/ec2-user/Demo01-AWS02/frontendadmin/build;
+        try_files $uri $uri/ /demoadmin/index.html;
+    }
+
+    location /demoadmin/favicon.ico {
+        access_log off;
+        log_not_found off;
+        alias /home/ec2-user/Demo01-AWS02/frontendadmin/build/favicon.ico;
+    }
+
+    # Landing
+    location / {
+        root /home/ec2-user/Demo01-AWS02/landing/build;
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /favicon.ico {
+        access_log off;
+        log_not_found off;
+        alias /home/ec2-user/Demo01-AWS02/landing/build/favicon.ico;
+    }    
+}
